@@ -1,0 +1,71 @@
+<?php
+
+require_once('bdd_conn.php');
+
+
+$query = $pdo->prepare
+(
+    'SELECT posts.id, title,content,firstName, lastName, name FROM posts
+    INNER JOIN authors ON authors.id = posts.author_id INNER JOIN categories on posts.category_id = categories.id
+    '
+    
+);
+$query->execute();
+$posts = $query->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<meta charset="utf-8">
+	<title>Add - Post</title>
+</head>
+<?php include ('header.phtml'); ?>
+<body>
+	<main>
+		<p class="p-title-add-post"><i class="fas fa-edit"></i></i>Mise à jour d'un article</p>
+
+		<section>
+			<?php foreach ($posts as $post):?>
+			<form action="update.php?id=<?= $post['id']?>&title=<?= $post['title'] ?>&content=<?= $post['content']?>" method="POST" class="form-add-post">
+				<fieldset>
+					<legend><i class="fas fa-newspaper"></i>Update article</legend>
+					<label>Titre:</label>
+					<input type="text" name="title" class="txt-title" value="<?= $post['title'] ?>">
+					<div class="clear"></div>
+					<label>Article:</label>
+					<textarea name="content" rows="10" cols="80%" class="txt-add-area"><?= $post['content'] ?></textarea>
+					<div class="clear"></div>
+					<label>Auteur:</label>
+
+					<select name="author" >
+						
+					
+						<option><?= $post['firstName']. " " .$post['lastName']?></option>
+					
+
+					</select>
+					<label>Catégorie:</label>
+
+					<select name="category" >
+										
+						
+						<option ><?= $post['name'] ?></option>
+					
+					</select><br>
+					<input type="submit" name="submit" value="Update" class="submit">
+					<input type="reset" name="reset" value="Anuler" class="reset">
+				</fieldset>
+
+			</form>
+			<?php endforeach ?>
+		</section>
+	</main>
+	<?php  include('footer.phtml'); ?>
+</body>
+</html>

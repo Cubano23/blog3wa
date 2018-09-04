@@ -1,0 +1,63 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Mon super blog</title>
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <?php include('header.phtml'); ?>
+    <main>
+         
+        <section>   
+            
+            <?php foreach($posts as $post): ?>
+
+                <article>
+                <h1> #Article</h1>
+                <h2><?= $post['title'] ?></h2>
+                <p class="p-detail-content"><?= $post['content'] ?></p>
+              
+                </article>
+
+                  
+                <h2>Rédigé par : <?= htmlspecialchars($post['firstName']). "  ".htmlspecialchars($post['lastName'] )?>
+                <?= htmlspecialchars($post['creationTimeStamp'] )?></h2>
+                 <?php endforeach ?>
+
+                 <?php foreach($comments as $comment): ?>
+
+                <h2>Pseudo : <?= htmlspecialchars($comment['nickName']). " || ".htmlspecialchars($comment['comment'] )." || "?>
+                <?= htmlspecialchars($comment['creationTime'] )?></h2>
+                <?php endforeach ?>
+
+                
+
+                
+
+                <form action="addComments.php?id=<?= $post['id']?>" method="POST" class="form-comments">
+
+                <fieldset>
+
+                <legend>Veuillez laissez votre commentaire ici</legend>
+                <label>Pseudo:</label>
+                <input type="text" name="pseudo" class="pseudo">
+                <label>Commentaire:</label>
+                <textarea name="comment" class="txt-commentaire" ></textarea>
+                <input type="submit" name="submit" id="submit" value="Envoyer" class="submit">
+
+                </fieldset>
+                 
+            </form>
+                
+            
+        </section>          
+    </main>
+    <?php  include('footer.phtml'); ?>
+</body>
+</html>
